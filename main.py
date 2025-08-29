@@ -10,4 +10,5 @@ def image_url(count):
         yield url
 
 for url in image_url(10):
-    print(url)
+    respond = requests.get(url)
+    print(respond)
