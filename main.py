@@ -1,4 +1,5 @@
 import requests
+import time
 
 def image_url(count):
     if count<=0:
@@ -6,8 +7,11 @@ def image_url(count):
         return
     
     for i in range(count):
-        url = f"https://picsum.photos/id/{i}/200/300"
+        url = f"https://picsum.photos/id/{i}/100/200"
         yield url
+
+#calculate process time
+start = time.time_ns()
 
 for i,url in enumerate(image_url(10)):
     filename = f"Images/image_{i}.jpg"
@@ -21,3 +25,6 @@ for i,url in enumerate(image_url(10)):
         print("image downloaded: ", filename)
     else:
         print("Image download error", filename)
+
+#print end time
+print("Mili-Second: ",(time.time_ns()-start)/1000000)
