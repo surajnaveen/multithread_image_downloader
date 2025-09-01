@@ -9,6 +9,15 @@ def image_url(count):
         url = f"https://picsum.photos/id/{i}/200/300"
         yield url
 
-for url in image_url(10):
-    respond = requests.get(url)
-    print(respond)
+for i,url in enumerate(image_url(10)):
+    filename = f"Images/image_{i}.jpg"
+
+    respond = requests.get(url, stream=True)
+    if respond.status_code == 200:
+        respond.raw.decode_content = True
+        with open(filename,"wb") as file:
+            file.write(respond.content)
+        
+        print("image downloaded: ", filename)
+    else:
+        print("Image download error", filename)
