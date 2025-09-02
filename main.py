@@ -1,7 +1,7 @@
 import requests
 import time
 
-img_count = 30
+img_count = 40
 
 def image_url(count):
     if count<=0:
@@ -35,4 +35,4 @@ for i,url in enumerate(image_url(img_count)):
     Image_downloader(i,url)
 
 #print end time
-print("Mili-Second: ",(time.time_ns()-start)/1000000000)
+print("Second: ",(time.time_ns()-start)/1_000_000_000)
