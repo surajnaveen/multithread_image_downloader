@@ -1,6 +1,8 @@
 import requests
 import time
 
+img_count = 30
+
 def image_url(count):
     if count<=0:
         print("Invalid Number")
@@ -29,8 +31,8 @@ def Image_downloader(i, url):
 #calculate process time
 start = time.time_ns()
 
-for i,url in enumerate(image_url(10)):
+for i,url in enumerate(image_url(img_count)):
     Image_downloader(i,url)
 
 #print end time
-print("Mili-Second: ",(time.time_ns()-start)/1000000)
+print("Mili-Second: ",(time.time_ns()-start)/1000000000)
