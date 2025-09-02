@@ -1,7 +1,8 @@
-import requests
 import time
+import my_threads
 
-img_count = 30
+#number of images
+img_count = 40
 
 def image_url(count):
     if count<=0:
@@ -12,27 +13,32 @@ def image_url(count):
         url = f"https://picsum.photos/id/{i}/100/200"
         yield url
 
-def Image_downloader(i, url):
-    try:
-        filename = f"Images/image_{i}.jpg"
-
-        respond = requests.get(url, stream=True)
-        if respond.status_code == 200:
-            respond.raw.decode_content = True
-            with open(filename,"wb") as file:
-                file.write(respond.content)
-            
-            print("image downloaded: ", filename)
-        else:
-            print("Image download error", filename)
-    except requests.exceptions.ConnectionError:
-        print("Make sure you connected to internet")
-
 #calculate process time
 start = time.time_ns()
 
-for i,url in enumerate(image_url(img_count)):
-    Image_downloader(i,url)
+full_url_list = [i for i in image_url(img_count)]
+urls_list = []
+
+#slicing size of url list
+thread_count = 10
+
+for i in range(0,len(full_url_list),thread_count):
+    li = full_url_list[i: (i+thread_count)]
+    urls_list.append(li)
+
+#print(len(urls_list))
+
+#get the list of all the created threads
+thread_list = []
+
+for i,url in enumerate(urls_list):
+    thread = my_threads.ThreadsClass(i, url)
+    thread.start()
+    thread_list.append(thread)
+
+#thread list join together to stops parallel process .join()
+for th in thread_list:
+    th.join()
 
 #print end time
-print("Mili-Second: ",(time.time_ns()-start)/1000000000)
+print("Second: ", (time.time_ns() - start) / 1_000_000_000)
